@@ -1,11 +1,13 @@
 package com.example.yaope.weathertest.db;
 
+import org.litepal.crud.DataSupport;
+
 /**
  * Created by yaope on 2017/9/28.
  * Contact Me : yaopengbo1@gmail.com
  */
 
-public class Country {
+public class County extends DataSupport{
     private int id;
     private String countyName;
     private String weatherId;
