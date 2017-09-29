@@ -5,9 +5,13 @@ import android.text.TextUtils;
 import com.example.yaope.weathertest.db.City;
 import com.example.yaope.weathertest.db.County;
 import com.example.yaope.weathertest.db.Province;
+import com.example.yaope.weathertest.gson.Weather;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.WeakHashMap;
 
 /**
  * Created by bobbyyyao on 2017/9/28.
@@ -71,5 +75,17 @@ public class Utility {
             }
         }
         return false;
+    }
+
+    public static Weather handleWeatherResponse(String response){
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            JSONArray jsonArray = jsonObject.getJSONArray("HeWeather");
+            String weatherContent = jsonArray.getJSONObject(0).toString();
+            return new Gson().fromJson(weatherContent, Weather.class);
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return null;
     }
 }

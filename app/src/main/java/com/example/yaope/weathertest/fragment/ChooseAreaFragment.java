@@ -2,9 +2,11 @@ package com.example.yaope.weathertest.fragment;
 
 import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
+import android.support.v4.view.GravityCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +18,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.yaope.weathertest.MainActivity;
 import com.example.yaope.weathertest.R;
+import com.example.yaope.weathertest.activity.WeatherActivity;
 import com.example.yaope.weathertest.db.City;
 import com.example.yaope.weathertest.db.County;
 import com.example.yaope.weathertest.db.Province;
@@ -89,6 +93,20 @@ public class ChooseAreaFragment extends Fragment{
                         selectedCity = cityList.get(i);
                         queryCounties();
                         break;
+                    case LEVEL_COUNTY:
+                        String weatherId = countyList.get(i).getWeatherId();
+                        if(getActivity() instanceof MainActivity){
+                            Intent intent = new Intent(getActivity(), WeatherActivity.class);
+                            intent.putExtra("weather_id", weatherId);
+                            startActivity(intent);
+                            getActivity().finish();
+                        }else if (getActivity() instanceof WeatherActivity){
+                            WeatherActivity weatherActivity = (WeatherActivity)getActivity();
+                            weatherActivity.drawerLayout.closeDrawer(GravityCompat.START);
+                            weatherActivity.swipeRefreshLayout.setRefreshing(true);
+                            weatherActivity.requestWeather(weatherId);
+                        }
+
                     default:
                 }
             }
